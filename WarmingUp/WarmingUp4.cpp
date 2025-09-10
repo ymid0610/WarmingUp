@@ -84,7 +84,7 @@ int main() {
 
 	Board_shuffle(Board);
 
-	int point = 0, count = 5;
+	int point = 0, count = 10;
 
 	while (count > 0) {
 		system("cls");
@@ -107,8 +107,16 @@ int main() {
 				x2 = Input2[0] - 'a';
 				y2 = atoi(&Input2[1]) - 1;
 
-				ShowBoard[y1][x1] = Board[y1][x1];
-				ShowBoard[y2][x2] = Board[y2][x2];
+				if (isupper(ShowBoard[y1][x1]) != 0) {
+					ShowBoard[y2][x2] = Board[y2][x2];
+				}
+				else if (isupper(ShowBoard[y2][x2]) != 0) {
+					ShowBoard[y1][x1] = Board[y1][x1];
+				}
+				else {
+					ShowBoard[y1][x1] = Board[y1][x1]; //@
+					ShowBoard[y2][x2] = Board[y2][x2]; //a
+				}
 
 				system("cls");
 				Board_Input_Draw(ShowBoard, point, count, x1, y1, x2, y2);
@@ -118,19 +126,47 @@ int main() {
 				point++;
 
 				if (ShowBoard[y1][x1] == ShowBoard[y2][x2]) {
-					ShowBoard[y1][x1] = toupper(ShowBoard[y1][x1]);
-					ShowBoard[y2][x2] = toupper(ShowBoard[y2][x2]);
+					ShowBoard[y1][x1] = toupper(ShowBoard[y1][x1]); //A
+					ShowBoard[y2][x2] = toupper(ShowBoard[y2][x2]); //c
 				}
 				else if (ShowBoard[y1][x1] == '@') {
+
+					for (int i = 0;i < 5; i++) {
+						for (int j = 0; j < 5; j++) {
+							if (Board[i][j] == tolower(ShowBoard[y2][x2])) { //a == A
+								ShowBoard[i][j] = toupper(Board[i][j]);
+							}
+						}
+
+					}
 					ShowBoard[y2][x2] = toupper(ShowBoard[y2][x2]);
+
 				}
 				else if (ShowBoard[y2][x2] == '@') {
+
+					for (int i = 0;i < 5; i++) {
+						for (int j = 0; j < 5; j++) {
+							if (Board[i][j] == tolower(ShowBoard[y1][x1])) { //a == A
+								ShowBoard[i][j] = toupper(Board[i][j]);
+							}
+						}
+
+					}
 					ShowBoard[y1][x1] = toupper(ShowBoard[y1][x1]);
+
 				}
 				else {
 					point--;
-					ShowBoard[y1][x1] = '*';
-					ShowBoard[y2][x2] = '*';
+					if (isupper(ShowBoard[y1][x1]) != 0) {
+						ShowBoard[y2][x2] = '*';
+					}
+					else if(isupper(ShowBoard[y2][x2]) != 0) {
+						ShowBoard[y1][x1] = '*';
+					}
+					else {
+						ShowBoard[y1][x1] = '*';
+						ShowBoard[y2][x2] = '*';
+					}
 				}
 
 			}
